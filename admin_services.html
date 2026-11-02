@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Manage Services | HomeServiceHub{% endblock %}
+{% block content %}
+<section class="admin-banner"><div class="container admin-title-row"><div><div class="eyebrow">ADMINISTRATION</div><h1>Manage services</h1><p>Add new services, update prices or hide a service from customers.</p></div><a class="btn btn-light" href="{{ url_for('admin_dashboard') }}">← Dashboard</a></div></section>
+<section class="container section admin-manage-grid">
+  <form class="panel form-panel" method="post"><h2>{% if editing %}Edit service{% else %}Add a service{% endif %}</h2>
+    {% if editing %}<input type="hidden" name="service_id" value="{{ editing.id }}">{% endif %}
+    <label>Service name<input name="name" required value="{{ editing.name if editing else '' }}" placeholder="e.g. Washing Machine Repair"></label>
+    <label>Category<input name="category" required value="{{ editing.category if editing else '' }}" placeholder="e.g. Appliance Repair"></label>
+    <label>Description<textarea name="description" rows="3" required placeholder="Describe what is included">{{ editing.description if editing else '' }}</textarea></label>
+    <label>Price (₹)<input name="price" type="number" min="0" step="0.01" required value="{{ editing.price if editing else '' }}" placeholder="499"></label>
+    <button class="btn btn-primary btn-full" type="submit">{% if editing %}Save changes{% else %}+ Add service{% endif %}</button>
+    {% if editing %}<a class="text-link centered" style="margin-top:12px" href="{{ url_for('admin_services') }}">Cancel editing</a>{% endif %}</form>
+  <div class="panel table-panel"><div class="panel-heading"><h2>Service catalogue</h2><span>{{ services|length }} total</span></div><div class="table-scroll"><table class="data-table"><thead><tr><th>Service</th><th>Category</th><th>Price</th><th>Visibility</th><th>Action</th></tr></thead><tbody>{% for s in services %}<tr><td><strong>{{ s.name }}</strong><small class="table-description">{{ s.description }}</small></td><td>{{ s.category }}</td><td>{{ s.price|inr }}</td><td>{% if s.active %}<span class="status status-completed">Active</span>{% else %}<span class="status status-cancelled">Hidden</span>{% endif %}</td><td><div class="table-actions"><a class="btn btn-small btn-light" href="{{ url_for('admin_services', edit=s.id) }}">Edit</a><form method="post" action="{{ url_for('toggle_service', service_id=s.id) }}"><button class="btn btn-small btn-light" type="submit">{% if s.active %}Hide{% else %}Enable{% endif %}</button></form></div></td></tr>{% endfor %}</tbody></table></div><p class="muted small">Admins can add, edit, and hide/enable services.</p></div>
+</section>
+{% endblock %}

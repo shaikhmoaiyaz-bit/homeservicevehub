@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Checkout | HomeServiceHub{% endblock %}
+{% block content %}
+<section class="page-banner compact"><div class="container"><div class="eyebrow">BOOK A VISIT</div><h1>Schedule your service</h1><p>Enter your details and choose a convenient appointment.</p></div></section>
+<section class="container section checkout-layout">
+  <form method="post" class="panel form-panel" id="checkout-form">
+    <h2>Customer details</h2><div class="form-grid">
+      <label>Full name *<input name="customer_name" required minlength="2" value="{{ request.form.get('customer_name','') }}" placeholder="Your full name"></label>
+      <label>Email address *<input name="email" type="email" required value="{{ request.form.get('email','') }}" placeholder="you@example.com"></label>
+      <label>Mobile number *<input name="phone" type="tel" inputmode="numeric" pattern="[0-9]{10}" minlength="10" maxlength="10" required value="{{ request.form.get('phone','') }}" placeholder="10-digit mobile"></label>
+      <label>Service date *<input name="service_date" type="date" required min="{{ now_date if now_date else '' }}" value="{{ request.form.get('service_date','') }}"></label>
+      <label>Time slot *<select name="time_slot" required><option value="">Choose a time</option>{% for slot in ['09:00 AM - 11:00 AM','11:00 AM - 01:00 PM','01:00 PM - 03:00 PM','03:00 PM - 05:00 PM','05:00 PM - 07:00 PM'] %}<option {% if request.form.get('time_slot') == slot %}selected{% endif %}>{{ slot }}</option>{% endfor %}</select></label>
+      <label class="full-field">Full service address *<textarea name="address" rows="3" minlength="8" required placeholder="House/flat, street, area, city, PIN code">{{ request.form.get('address','') }}</textarea></label>
+      <label class="full-field">Additional notes (optional)<textarea name="notes" rows="2" placeholder="Any details the service provider should know">{{ request.form.get('notes','') }}</textarea></label>
+    </div>
+    <button class="btn btn-primary btn-full" type="submit">Confirm booking & generate bill</button>
+    <p class="muted small">No online payment is required. Your booking will be marked Pending.</p>
+  </form>
+  <aside class="panel summary-panel"><h2>Booking summary</h2>{% for item in items %}<div class="summary-line"><span>{{ item.service.name }} × {{ item.quantity }}</span><strong>{{ item.line_total|inr }}</strong></div>{% endfor %}<div class="summary-line"><span>Tax</span><span>₹0.00</span></div><div class="summary-line total-line"><strong>Total bill</strong><strong>{{ subtotal|inr }}</strong></div></aside>
+</section>
+{% endblock %}

@@ -1,0 +1,5 @@
+{% extends "base.html" %}
+{% block title %}Admin Login | HomeServiceHub{% endblock %}
+{% block content %}
+<section class="container section auth-section"><form class="panel auth-card" method="post"><div class="service-icon">⌘</div><div class="eyebrow">ADMINISTRATOR ACCESS</div><h1>Welcome back</h1><p class="muted">Sign in to manage services and bookings.</p><label>Username<input name="username" required autocomplete="username" placeholder="Admin username"></label><label>Password<input name="password" type="password" required autocomplete="current-password" placeholder="Password"></label><button class="btn btn-primary btn-full" type="submit">Sign in to dashboard</button><p class="demo-credentials">Demo: <code>admin</code> / <code>admin123</code></p></form></section>
+{% endblock %}

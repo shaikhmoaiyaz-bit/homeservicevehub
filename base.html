@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}HomeServiceHub{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script defer src="{{ url_for('static', filename='js/main.js') }}"></script>
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="{{ url_for('home') }}"><span class="brand-icon">⌂</span> HomeService<span>Hub</span></a>
+    <button class="menu-toggle" type="button" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links">
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('services') }}">Services</a>
+      <a href="{{ url_for('booking_status') }}">Track Booking</a>
+      <a href="{{ url_for('cart') }}" class="cart-link">Cart</a>
+      {% if session.get('admin_id') %}
+        <a href="{{ url_for('admin_dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('admin_logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('admin_login') }}">Admin</a>
+      {% endif %}
+    </nav>
+  </div>
+</header>
+<main>
+  <div class="container flash-area">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}{% for category, message in messages %}
+        <div class="flash flash-{{ category }}">{{ message }} <button type="button" class="flash-close" aria-label="Dismiss">×</button></div>
+      {% endfor %}{% endif %}
+    {% endwith %}
+  </div>
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer">
+  <div class="container footer-inner">
+    <div><a class="brand footer-brand" href="{{ url_for('home') }}">HomeService<span>Hub</span></a><p>Reliable home services, simply booked.</p></div>
+    <div><strong>College Project</strong><p>Python Flask · HTML · CSS · SQLite</p></div>
+    <div><strong>Help</strong><p>Demo project — no online payment is collected.</p></div>
+  </div>
+  <div class="container copyright">© 2026 HomeServiceHub · Academic demonstration project</div>
+</footer>
+</body>
+</html>

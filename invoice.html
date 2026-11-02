@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Invoice #{{ booking.id }} | HomeServiceHub{% endblock %}
+{% block content %}
+<section class="container section invoice-wrap">
+  <div class="invoice-actions"><a class="text-link" href="{{ url_for('home') }}">← Home</a><button class="btn btn-primary" onclick="window.print()">Print / Save as PDF</button></div>
+  <article class="invoice panel">
+    <div class="invoice-top"><div><div class="brand">HomeService<span>Hub</span></div><p class="muted">Home service booking and billing</p></div><div class="invoice-label"><span>INVOICE</span><h1>#{{ "%05d"|format(booking.id) }}</h1><span class="status status-{{ booking.status|lower }}">{{ booking.status }}</span></div></div>
+    <div class="invoice-meta"><div><small>BILLED TO</small><strong>{{ booking.customer_name }}</strong><span>{{ booking.email }}</span><span>{{ booking.phone }}</span><span>{{ booking.address }}</span></div><div><small>BOOKING DETAILS</small><strong>Booking #{{ booking.id }}</strong><span>Created: {{ booking.created_at }}</span><span>Service date: {{ booking.service_date }}</span><span>Time: {{ booking.time_slot }}</span></div></div>
+    <table class="data-table invoice-table"><thead><tr><th>Service</th><th>Unit price</th><th>Qty</th><th class="align-right">Amount</th></tr></thead><tbody>{% for item in items %}<tr><td>{{ item.service_name }}</td><td>{{ item.unit_price|inr }}</td><td>{{ item.quantity }}</td><td class="align-right">{{ item.line_total|inr }}</td></tr>{% endfor %}</tbody></table>
+    <div class="invoice-total"><div class="summary-line"><span>Subtotal</span><span>{{ booking.subtotal|inr }}</span></div><div class="summary-line"><span>Tax</span><span>{{ booking.tax|inr }}</span></div><div class="summary-line total-line"><strong>Total due</strong><strong>{{ booking.total|inr }}</strong></div><p class="muted small">Payment mode: Not collected online · This is a booking bill, not a payment receipt.</p></div>
+    {% if booking.notes %}<div class="invoice-notes"><strong>Customer notes</strong><p>{{ booking.notes }}</p></div>{% endif %}
+    <div class="invoice-thanks">Thank you for choosing HomeServiceHub.</div>
+  </article>
+  <div class="booking-reference"><strong>Save your booking ID: {{ booking.id }}</strong><p>Use this ID on the Track Booking page to check the latest status.</p><a class="btn btn-light" href="{{ url_for('booking_status', id=booking.id) }}">Track this booking</a></div>
+</section>
+{% endblock %}

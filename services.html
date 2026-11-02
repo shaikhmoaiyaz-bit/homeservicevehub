@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Services | HomeServiceHub{% endblock %}
+{% block content %}
+<section class="page-banner"><div class="container"><div class="eyebrow">SERVICE CATALOGUE</div><h1>Find the right help for home.</h1><p>Search services and add the ones you need to your cart.</p></div></section>
+<section class="container section">
+  <form class="filter-bar" method="get">
+    <input type="search" name="q" value="{{ q }}" placeholder="Search services..." aria-label="Search services">
+    <select name="category" aria-label="Filter category"><option value="">All categories</option>{% for c in categories %}<option value="{{ c.category }}" {% if category == c.category %}selected{% endif %}>{{ c.category }}</option>{% endfor %}</select>
+    <button class="btn btn-primary" type="submit">Search</button><a class="btn btn-light" href="{{ url_for('services') }}">Reset</a>
+  </form>
+  <div class="service-grid">
+    {% for service in services %}
+    <article class="service-card">
+      <div class="service-icon icon-{{ loop.index0 % 6 }}">{{ ['⚡','🔧','✦','❄','⌂','♧'][loop.index0 % 6] }}</div><div class="service-category">{{ service.category }}</div>
+      <h3>{{ service.name }}</h3><p>{{ service.description }}</p>
+      <div class="service-card-bottom"><strong>{{ service.price|inr }}</strong><form method="post" action="{{ url_for('add_to_cart', service_id=service.id) }}"><button class="btn btn-small btn-primary" type="submit">Add to cart +</button></form></div>
+    </article>
+    {% else %}<div class="empty-state"><h3>No matching services</h3><p>Try another search or reset the filters.</p><a class="btn btn-primary" href="{{ url_for('services') }}">Show all services</a></div>{% endfor %}
+  </div>
+</section>
+{% endblock %}

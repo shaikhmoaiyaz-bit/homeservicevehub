@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Home | HomeServiceHub{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow"><span class="eyebrow-dot"></span> HOME SERVICES MADE EASY</div>
+      <h1>Your home,<br><span>taken care of.</span></h1>
+      <p>Book trusted help for everyday home needs. Choose a service, schedule a visit and get a clear bill.</p>
+      <div class="hero-actions"><a class="btn btn-primary" href="{{ url_for('services') }}">Explore services <span>→</span></a><a class="btn btn-light" href="{{ url_for('booking_status') }}">Track a booking</a></div>
+      <div class="hero-trust"><span>✓ Clear pricing</span><span>✓ Easy booking</span><span>✓ Printed invoice</span></div>
+    </div>
+    <div class="hero-art">
+      <div class="art-orbit orbit-one"></div><div class="art-orbit orbit-two"></div>
+      <div class="home-illustration"><div class="roof"></div><div class="house"><div class="window"></div><div class="door"></div></div><div class="plant plant-one">♧</div><div class="plant plant-two">♧</div></div>
+      <div class="floating-card card-top"><span class="floating-icon">✓</span><div><strong>Booking made easy</strong><small>Pick a time that suits you</small></div></div>
+      <div class="floating-card card-bottom"><span class="price-symbol">₹</span><div><strong>Clear bills</strong><small>Know your total upfront</small></div></div>
+    </div>
+  </div>
+</section>
+<section class="container section">
+  <div class="section-heading"><div><div class="eyebrow">OUR SERVICES</div><h2>Help for every corner of home</h2><p>Choose a service to see its details and price.</p></div><a class="text-link" href="{{ url_for('services') }}">View all services →</a></div>
+  <div class="service-grid">
+    {% for service in services %}
+    <article class="service-card">
+      <div class="service-icon icon-{{ loop.index0 % 6 }}">{{ ['⚡','🔧','✦','❄','⌂','♧'][loop.index0 % 6] }}</div>
+      <div class="service-category">{{ service.category }}</div><h3>{{ service.name }}</h3><p>{{ service.description }}</p>
+      <div class="service-card-bottom"><strong>{{ service.price|inr }}</strong><form method="post" action="{{ url_for('add_to_cart', service_id=service.id) }}"><button class="btn btn-small btn-primary" type="submit">Add to cart +</button></form></div>
+    </article>
+    {% else %}<p>No services available yet.</p>{% endfor %}
+  </div>
+</section>
+<section class="benefits-band"><div class="container benefits-grid"><div><span class="benefit-number">01</span><h3>Simple booking</h3><p>Select a service and a convenient date/time.</p></div><div><span class="benefit-number">02</span><h3>Transparent bill</h3><p>Review service charges before confirming.</p></div><div><span class="benefit-number">03</span><h3>One dashboard</h3><p>Admins can manage services and bookings.</p></div></div></section>
+<section class="container bottom-cta"><div><div class="eyebrow">READY WHEN YOU ARE</div><h2>Let’s make home care simpler.</h2></div><a class="btn btn-primary" href="{{ url_for('services') }}">Book a service →</a></section>
+{% endblock %}
