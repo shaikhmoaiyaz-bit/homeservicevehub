@@ -35,6 +35,7 @@ def close_db(error=None):
         db.close()
 
 def init_db():
+    os.makedirs(os.path.dirname(DB_PATH), exist_ok=True)
     db = sqlite3.connect(DB_PATH)
     db.execute("PRAGMA foreign_keys = ON")
     db.executescript("""
