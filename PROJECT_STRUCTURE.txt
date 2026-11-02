@@ -1,0 +1,33 @@
+HomeServiceHub project structure
+
+app.py
+requirements.txt
+README.md
+Project_Report_HomeServiceHub.docx
+templates/
+  base.html
+  index.html
+  services.html
+  cart.html
+  checkout.html
+  invoice.html
+  booking_status.html
+  admin_login.html
+  admin_dashboard.html
+  admin_services.html
+  admin_bookings.html
+static/
+  css/style.css
+  js/main.js
+instance/
+  (SQLite database is created here when the app first runs)
+
+Run:
+  pip install -r requirements.txt
+  python app.py
+Visit:
+  http://127.0.0.1:5000
+
+Admin demo:
+  username: admin
+  password: admin123
